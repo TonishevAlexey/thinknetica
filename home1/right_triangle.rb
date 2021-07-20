@@ -11,10 +11,6 @@ side2 = gets.chomp.to_i
 print "Введите сторону 3:"
 side3 = gets.chomp.to_i
 max_side = [side3, side2, side1].sort
-puts max_side[0]
-puts max_side[1]
-puts max_side[2]
-
 if side1 == side2 && side2 == side3
   puts "Треугольник равносторонний"
 elsif (side1 == side2) || (side1 == side3) || (side2 == side3)
