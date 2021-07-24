@@ -5,23 +5,30 @@
 # Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых, пассажирских
 # Может отправлять поезда (по одному за раз, при этом, поезд удаляется из списка поездов, находящихся на станции).
 class Station
+  # Может возвращать список всех поездов на станции, находящиеся в текущий момент
   attr_reader :trains, :name
 
+  #   Имеет название, которое указывается при ее создании
   def initialize(name)
     @name = name
     @trains = []
   end
 
+  # Может принимать поезда (по одному за раз)
   def add_trains(train)
     @trains << train.number
   end
-  def run_trains(station,train)
+
+  # Может отправлять поезда (по одному за раз, при этом, поезд удаляется из списка поездов, находящихся на станции).
+  def run_trains(station, train)
     station.add_trains(train)
     @trains.delete(train)
   end
+
+  # Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых, пассажирских
   def trains_type(type)
-    n=0
-    @trains.each { |train| n+=1 if @trains.type == type}
+    n = []
+    @trains.each { |train| n << @trains if train.type == type }
     n
   end
 end
