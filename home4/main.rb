@@ -89,7 +89,7 @@ end
 station = @trains[gets.chomp.to_i]
 station.go_next
 @n_t = 0
-print "Выберете поезд который хотите отправить на предыдущую станцию:"
+puts "Выберете поезд который хотите отправить на предыдущую станцию:"
 @trains.each do |s| puts "Для выбора #{s.number} введите #{@n_t}"
 @n_t += 1
 end

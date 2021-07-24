@@ -25,18 +25,21 @@ class Route
   end
 
   def station_last
-    @route[@train_position - 1] if @current_station_index - 1 >= 0
+    return @route[@train_position - 1] if @train_position - 1 >= 0
     "Вы на первой станции."
   end
 
   #   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута , прописана в условиях задания
   def station_next
-    @route[@train_position + 1] if @current_station_index + 1 <= (@route.size - 1)
+    return  @route[@train_position + 1] if @train_position + 1 <= @route.size - 1
     "Вы на последней станции."
   end
 
   #   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута , прописана в условиях задания
   def station_now
     @route[@train_position]
+  end
+  def route_size
+    @route.size
   end
 end

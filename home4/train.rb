@@ -30,16 +30,16 @@ class Train
   #При добавлении маршрута поезд должен добавляться на станцию отправления , прописана в условиях задания,Может принимать маршрут следования (объект класса Route).
   def assign_route(route)
     @route = route
-    @route[@current_station_index].add_trains(self)
+    @route.station_now.add_trains(self)
   end
 
   #   Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
   #Следующая станция , прописана в условиях задания, run_trains это движение поезда по маршруту , т.е удаление с предведущей станции и добавление на новой
   def go_next
-    if @current_station_index < (@route.size -1)
-      @route.station_next.run_trains(@route[0 + 1], self)
+    if @current_station_index < ((@route.route_size) -1)
+      @route.station_now.run_trains(@route.station_next, self)
       @current_station_index += 1
-      @route.train_position = (@current_station_index)
+      @route.train_position = @current_station_index
     else
       puts "Вы на последней станции."
     end
@@ -48,9 +48,9 @@ class Train
   #   Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
   def go_back
     if @current_station_index > 0
-      @route.station_last.run_trains(@route[0 - 1], self)
+      @route.station_now.run_trains(@route.station_last, self)
       @current_station_index -= 1
-      @route.train_position = (@current_station_index)
+      @route.train_position = @current_station_index
     else
       puts "Вы на первой станции."
     end
