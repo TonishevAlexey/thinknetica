@@ -7,10 +7,11 @@
 class Route
   # Исправлено.Может выводить список всех станций по-порядку от начальной до конечной
   attr_reader :route
-
+  attr_writer :train_position
   #   Имеет начальную и конечную станцию, а также список промежуточных станций.
   def initialize(station_start, station_end)
     @route = [station_start, station_end]
+    @train_position = 0
   end
 
   #   Может добавлять промежуточную станцию в список
@@ -23,4 +24,19 @@ class Route
     @route.delete(station)
   end
 
+  def station_last
+    @route[@train_position - 1] if @current_station_index - 1 >= 0
+    "Вы на первой станции."
+  end
+
+  #   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута , прописана в условиях задания
+  def station_next
+    @route[@train_position + 1] if @current_station_index + 1 <= (@route.size - 1)
+    "Вы на последней станции."
+  end
+
+  #   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута , прописана в условиях задания
+  def station_now
+    @route[@train_position]
+  end
 end

@@ -50,8 +50,9 @@ class Train
   #Следующая станция , прописана в условиях задания, run_trains это движение поезда по маршруту , т.е удаление с предведущей станции и добавление на новой
   def go_next
     if @current_station_index < (@route.size -1)
-      @route[@current_station_index].run_trains(@route[0 + 1], self)
+      @route.station_next.run_trains(@route[0 + 1], self)
       @current_station_index += 1
+      @route.train_position = (@current_station_index)
     else
       puts "Вы на последней станции."
     end
@@ -60,8 +61,9 @@ class Train
   #   Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
   def go_back
     if @current_station_index > 0
-      @route[@current_station_index].run_trains(@route[0 - 1], self)
+      @route.station_last.run_trains(@route[0 - 1], self)
       @current_station_index -= 1
+      @route.train_position = (@current_station_index)
     else
       puts "Вы на первой станции."
     end
@@ -69,19 +71,17 @@ class Train
 
   #   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута , прописана в условиях задания
   def station_last
-    @route[@current_station_index - 1] if @current_station_index - 1 >= 0
-    "Вы на первой станции."
+    @route.station_last
   end
 
   #   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута , прописана в условиях задания
   def station_next
-    @route[@current_station_index + 1] if @current_station_index + 1 <= (@route.size - 1)
-    "Вы на последней станции."
+    @route.station_next
   end
 
   #   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута , прописана в условиях задания
   def station_now
-    @route[@current_station_index]
+    @route.station_now
   end
 
 end
