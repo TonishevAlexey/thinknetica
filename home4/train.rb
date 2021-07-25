@@ -70,5 +70,15 @@ class Train
   def station_now
     @route.station_now
   end
+  def add_car(type)
+    @number_cars << type
+    "Неправельный тип вагона"
+  end
 
+  #  Может прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает или уменьшает количество вагонов). Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
+
+  def delete_car
+    @number_cars.last.delete if self.speed == 0 && @number_cars.size > 1
+    puts "Поезд находиться в движении или остался всего 1"
+  end
 end
