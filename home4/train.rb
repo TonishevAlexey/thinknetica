@@ -36,7 +36,7 @@ class Train
   #   Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
   #Следующая станция , прописана в условиях задания, run_trains это движение поезда по маршруту , т.е удаление с предведущей станции и добавление на новой
   def go_next
-    if @current_station_index < ((@route.route_size) -1)
+    if @current_station_index < ((@route.route_size) - 1)
       @route.station_now.run_trains(@route.station_next, self)
       @current_station_index += 1
       @route.train_position = @current_station_index

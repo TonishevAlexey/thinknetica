@@ -11,6 +11,6 @@ class CargoTrain < Train
 
   def delete_car
     @number_cars.last.delete if self.speed == 0 && @number_cars.size > 1
-    puts "Неправельный тип вагона или остался всего 1"
+    puts "Поезд находиться в движении или остался всего 1"
   end
 end
