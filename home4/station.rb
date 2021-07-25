@@ -27,6 +27,12 @@ class Station
 
   # Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых, пассажирских
   def trains_type(type)
+    render_trains(type)
+  end
+
+  private
+
+  def render_trains(type)
     n = []
     @trains.each { |train| n << @trains if train.type == type }
     n
