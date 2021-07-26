@@ -1,5 +1,5 @@
 class CargoCars
   def type
-    "грузавой"
+    "грузовой"
   end
 end
