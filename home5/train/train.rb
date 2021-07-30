@@ -1,15 +1,11 @@
-# Класс Train (Поезд):
-#   Имеет номер (произвольная строка) и тип (грузовой, пассажирский) и количество вагонов, эти данные указываются при создании экземпляра класса +
-# Может набирать скорость speed()
-# Может возвращать текущую скорость speed
-# Может тормозить (сбрасывать скорость до нуля) stop
-# Может возвращать количество вагонов number_cars
-#  Может прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает или уменьшает количество вагонов). Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
-#   Может принимать маршрут следования (объект класса Route).
-#     При назначении маршрута поезду, поезд автоматически помещается на первую станцию в маршруте.
-#   Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
-#   Возвращать предыдущую станцию, текущую, следующую, на основе маршрута
+require_relative '../modules/company'
+require_relative '../modules/instance_counter'
+
+
 class Train
+  extend Company
+  include InstanceCounter
+  @@train_all = []
   # Может набирать скорость speed(),Может возвращать текущую скорость speed
   attr_accessor :speed;
   attr_reader :number_cars, :number;
@@ -20,6 +16,7 @@ class Train
     @speed = 0
     @route
     @current_station_index = 0
+    @@train_all << self
   end
 
   # Исправлено, Может тормозить (сбрасывать скорость до нуля) stop
@@ -86,6 +83,16 @@ class Train
     puts "Поезд находиться в движении или остался всего 1"
   end
 
+  def self.find(attr)
+    f = @@train_all.select { |t| t.number == attr }
+    if f.empty?
+      'nil'
+    else
+      f
+    end
+
+  end
+
   private
 
   def error
@@ -99,9 +106,13 @@ class Train
   def type?
     self.class == type.class.to_s
   end
+
   def current_station_index
     @route.train_position = @current_station_index
 
   end
 
 end
+
+
+
