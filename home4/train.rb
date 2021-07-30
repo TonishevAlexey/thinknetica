@@ -39,7 +39,7 @@ class Train
     if @current_station_index < ((@route.route_size) - 1)
       @route.station_now.run_trains(@route.station_next, self)
       @current_station_index += 1
-      @route.train_position = @current_station_index
+      current_station_index
     else
       puts "Вы на последней станции."
     end
@@ -50,7 +50,7 @@ class Train
     if @current_station_index > 0
       @route.station_now.run_trains(@route.station_last, self)
       @current_station_index -= 1
-      @route.train_position = @current_station_index
+      current_station_index
     else
       puts "Вы на первой станции."
     end
@@ -70,19 +70,38 @@ class Train
   def station_now
     @route.station_now
   end
+
   def add_car(type)
-    @number_cars << type
-    "Неправельный тип вагона"
+    if stop? && type?
+      @number_cars << type
+    else
+      error
+    end
   end
 
   #  Может прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает или уменьшает количество вагонов). Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
 
   def delete_car
-    del_car
-  end
-  private
-  def del_car
-    @number_cars.last.delete if self.speed == 0 && @number_cars.size > 1
+    @number_cars.last.delete if stop? && @number_cars.size > 1
     puts "Поезд находиться в движении или остался всего 1"
   end
+
+  private
+
+  def error
+    puts "Неправельный тип вагона"
+  end
+
+  def stop?
+    self.speed == 0
+  end
+
+  def type?
+    self.class == type.class.to_s
+  end
+  def current_station_index
+    @route.train_position = @current_station_index
+
+  end
+
 end
