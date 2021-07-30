@@ -17,6 +17,7 @@ class Train
     @route
     @current_station_index = 0
     @@train_all << self
+    self.register_instance
   end
 
   # Исправлено, Может тормозить (сбрасывать скорость до нуля) stop
@@ -111,8 +112,15 @@ class Train
     @route.train_position = @current_station_index
 
   end
-
 end
 
-
+a = Train.new(1)
+a2 = Train.new(1)
+a3 = Train.new(3)
+puts Train.find(7)
+puts Train.find(1)
+puts Train.instances
+puts a.instances
+puts a.instances
+puts a.instances
 
