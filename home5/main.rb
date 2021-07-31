@@ -11,6 +11,7 @@ class Main
   @@station = []
   @@trains = []
   @@route = 0
+  puts "w-буква или цифра,d-цифра."
 
   def create_station
     create_s
@@ -47,61 +48,77 @@ class Main
   private
 
   def run_back
-    @n_t = 0
-    puts "Выберете поезд который хотите отправить на предыдущую станцию:"
-    @@trains.each do |s|
-      puts "Для выбора #{s.number} введите #{@n_t}"
-      @n_t += 1
+    begin
+      @n_t = 0
+      puts "Выберете поезд который хотите отправить на предыдущую станцию:"
+      @@trains.each do |s|
+        puts "Для выбора #{s.number} введите #{@n_t}"
+        @n_t += 1
+      end
+      station = @@trains[gets.chomp.to_i]
+      station.go_back
+    rescue => e
+      puts e
     end
-    station = @@trains[gets.chomp.to_i]
-    station.go_back
   end
 
   def run_car
-    @n_t = 0
-    puts "Выберете поезд который хотите отправить на следующую станцию:"
-    @@trains.each do |s|
-      puts "Для выбора #{s.number} введите #{@n_t}"
-      @n_t += 1
+    begin
+      @n_t = 0
+      puts "Выберете поезд который хотите отправить на следующую станцию:"
+      @@trains.each do |s|
+        puts "Для выбора #{s.number} введите #{@n_t}"
+        @n_t += 1
+      end
+      station = @trains[gets.chomp.to_i]
+      station.go_next
+    rescue => e
+      puts e
     end
-    station = @@trains[gets.chomp.to_i]
-    station.go_next
   end
 
   def delete_c
-    @n_t = 0
-    puts "Выберете поезд у которо хотит удалить вагон:"
-    @@trains.each do |s|
-      puts "Для выбора #{s.number} введите #{@n_t}"
-      @n_t += 1
+    begin
+      @n_t = 0
+      puts "Выберете поезд у которо хотит удалить вагон:"
+      @@trains.each do |s|
+        puts "Для выбора #{s.number} введите #{@n_t}"
+        @n_t += 1
+      end
+      trains = gets.chomp.to_i
+      @@trains[trains].delete_car
+    rescue => e
+      e
     end
-    trains = gets.chomp.to_i
-    @@trains[trains].delete_car
   end
 
   def create_s
-    @n = 0
-    loop do
-      print "Введите название станции(Для окончаеия создания станций введите(если их больше двух)stop):"
+    begin
+      print "Введите название станции в формате (на русском не менее 3 и не более 10 букв):"
       name_station = gets.chomp
-      @n += 1
-      break if name_station == 'stop' && @n >= 2
       @@station << Station.new(name_station)
+    rescue => e
+      puts e
+      retry
     end
   end
 
   def create_t
-    loop do
-      print "Введите номер поезда(Для окончаеия создания поездов введите stop): "
+    begin
+      print "Введите номер поезда в формате (ww-www или wwwww) : "
       number_train = gets.chomp
-      break if number_train == 'stop'
-      print "Введите тип поезда(пассажирский или грузавой):"
+      print "Введите тип поезда(пассажирский-п или грузовой-г):"
       type_train = gets.chomp
-      if type_train == 'пассажирский'
+      if type_train == 'п'
         @@trains << CargoTrain.new(number_train)
-      else
+      elsif type_train == 'г'
         @@trains << PassengerTrain.new(number_train)
+      else
+        raise "Неверный тип поезда"
       end
+    rescue => e
+      puts e
+      retry
     end
   end
 
@@ -144,29 +161,31 @@ class Main
   end
 
   def add_c
-    trains = gets.chomp.to_i
-    @@trains[trains].assign_route(@@route)
-    @n_t = 0
-    puts "Выберете поезд к коророму хотите добавить вагон:"
-    @@trains.each do |s|
-      puts "Для выбора #{s.number} введите #{@n_t}"
-      @n_t += 1
-    end
-    trains = gets.chomp.to_i
-    if 'PassengerCars' == trains.class.to_s
+    begin
+      trains = gets.chomp.to_i
+      @@trains[trains].assign_route(@@route)
+      @n_t = 0
+      puts "Выберете поезд к коророму хотите добавить вагон:"
+      @@trains.each do |s|
+        puts "Для выбора #{s.number} введите #{@n_t}"
+        @n_t += 1
+      end
+      trains = gets.chomp.to_i
       @@trains[trains].add_car
-    elsif 'CargoCars' == trains.class.to_s
-      @@trains[trains].add_car
+    rescue => e
+      puts e
+      retry
     end
   end
+
 end
 
 m = Main.new
-m.create_station
+# m.create_station
 m.create_train
-m.create_route
-m.add_route
-m.add_car
-m.delete_car
-m.go_next
-m.go_back
+# m.create_route
+# m.add_route
+# m.add_car
+# m.delete_car
+# m.go_next
+# m.go_back
