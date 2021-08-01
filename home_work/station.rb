@@ -41,7 +41,9 @@ class Station
   private
 
   def validate!
-    raise "Неверный формат названия станции" unless name =~ NAME_FORMAT
+    errors = []
+    errors << "Неверный формат названия станции" unless name =~ NAME_FORMAT
+    raise errors.join(" ") unless errors.empty?
   end
 
 end

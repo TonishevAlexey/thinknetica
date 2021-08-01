@@ -58,13 +58,13 @@ class Train
   end
 
   def add_car(type)
-    valid_type!
+    validate!
     @number_cars << type
 
   end
 
   def delete_car
-    raise  "Поезд находиться в движении или остался всего 1" unless stop? && @number_cars.size > 1
+    raise "Поезд находиться в движении или остался всего 1" unless stop? && @number_cars.size > 1
     @number_cars.last.delete
   end
 
@@ -88,11 +88,10 @@ class Train
   protected
 
   def validate!
-    raise "Неверный формат номера" unless number.to_s =~ NUMBER_FORMAT
-  end
-
-  def valid_type!
-    raise "Неправельный тип вагона или скорость больше 0" unless stop? && type?
+    errors = []
+    errors << "Неверный формат номера" unless number.to_s =~ NUMBER_FORMAT
+    errors << "Неправельный тип вагона или скорость больше 0" unless stop? && type?
+    raise errors.join(" ") unless errors.empty?
   end
 
   def stop?
