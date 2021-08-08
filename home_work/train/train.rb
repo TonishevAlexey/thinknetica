@@ -15,7 +15,7 @@ class Train
     @number_cars = []
     @speed = 0
     @route
-    @current_station_index = 0
+    @current_station_index = 1
     validate!
     @@train_all << self
     self.register_instance
@@ -31,14 +31,14 @@ class Train
   end
 
   def go_next
-    raise "Вы на первой станции" unless @current_station_index < ((@route.route_size) - 1)
+    raise "Вы на первой станции" if @current_station_index == 1
     @route.station_now.run_trains(@route.station_next, self)
     @current_station_index += 1
     current_station_index
   end
 
   def go_back
-    raise "Вы на первой станции" unless @current_station_index > 0
+    raise "Вы на первой станции" unless @current_station_index == @route.route_size
     @route.station_now.run_trains(@route.station_last, self)
     @current_station_index -= 1
     current_station_index
@@ -55,12 +55,6 @@ class Train
 
   def station_now
     @route.station_now
-  end
-
-  def add_car(type)
-    validate!
-    @number_cars << type
-
   end
 
   def delete_car
@@ -84,22 +78,25 @@ class Train
   rescue
     false
   end
-
+  def self.all
+    @@train_all
+  end
+  def all_cars_block (&block)
+    number_cars.each_with_index do |car,i| print "Номер вагона:#{i+1}:"
+    puts "#{block.call(car)}"
+    end
+  end
   protected
 
   def validate!
     errors = []
     errors << "Неверный формат номера" unless number.to_s =~ NUMBER_FORMAT
-    errors << "Неправельный тип вагона или скорость больше 0" unless stop? && type?
+    errors << "Неправельный поезд находиться в двежении" unless stop?
     raise errors.join(" ") unless errors.empty?
   end
 
   def stop?
     self.speed == 0
-  end
-
-  def type?
-    self.class == type.class
   end
 
   def current_station_index

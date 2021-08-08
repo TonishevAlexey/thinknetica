@@ -4,7 +4,7 @@ class Route
 
   attr_reader :route
   attr_writer :train_position
-
+  @@route_all = []
   def initialize(station_start, station_end)
     @route = [station_start, station_end]
     @train_position = 0
@@ -34,5 +34,8 @@ class Route
 
   def route_size
     @route.size
+  end
+  def self.all
+    @@route_all
   end
 end
