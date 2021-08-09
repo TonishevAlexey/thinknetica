@@ -2,14 +2,14 @@ require_relative './modules/instance_counter'
 
 class Station
   attr_reader :trains, :name
-  @@station = []
+  @@stations = []
   NAME_FORMAT = /^[а-я]{3,10}$/i
 
   def initialize(name)
     @name = name
     @trains = []
     validate!
-    @@station << self
+    @@stations << self
   end
 
   def add_trains(train)
@@ -28,7 +28,7 @@ class Station
   end
 
   def self.all
-    @@station
+    @@stations
   end
 
   def valid?

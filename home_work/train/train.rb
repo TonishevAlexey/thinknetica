@@ -4,7 +4,7 @@ require_relative '../modules/instance_counter'
 class Train
   extend Company
   include InstanceCounter
-  @@train= []
+  @@trains= []
   attr_accessor :speed
   attr_reader :number_cars, :number
 
@@ -17,7 +17,7 @@ class Train
     @route
     @current_station_index = 1
     validate!
-    @@train << self
+    @@trains << self
     self.register_instance
   end
 
@@ -63,7 +63,7 @@ class Train
   end
 
   def self.find(attr)
-    f = @@train.select { |t| t.number == attr }
+    f = @@trains.select { |t| t.number == attr }
     if f.empty?
       'nil'
     else
@@ -79,7 +79,7 @@ class Train
     false
   end
   def self.all
-    @@train
+    @@trains
   end
   def all_cars_block (&block)
     number_cars.each_with_index do |car,i| print "Номер вагона:#{i+1}:"
