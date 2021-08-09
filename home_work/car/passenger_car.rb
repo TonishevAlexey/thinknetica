@@ -1,11 +1,10 @@
 require_relative 'car'
 
 class PassengerCars < Car
-  def take_places
-    self.busy += 1
+
+  def take_places(busy_places=1)
+    self.busy_places += 1
   end
-  def free_places
-    self.places - self.busy
-  end
+
 end
 

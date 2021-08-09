@@ -141,7 +141,7 @@ module Interface
     puts "Выберете поезд к которого хотите посмотреть вагоны."
     Train.all.each_with_index { |sta, i| puts "#{sta.number}:#{i}" }
     num = gets.chomp.to_i
-    Train.all[num].all_cars_block { |arr| puts "Свободных:#{arr.places - arr.busy}.Занятых:#{arr.busy}" }
+    Train.all[num].all_cars_block { |arr| puts "Свободных:#{arr.places - arr.busy_places}.Занятых:#{arr.busy}" }
 
   end
 
@@ -149,7 +149,7 @@ module Interface
     puts "Выберете станцию на которой хотите посмотреть поезда."
     Station.all.each_with_index { |sta, i| puts "#{sta.name}:#{i}" }
     num = gets.chomp.to_i
-    Station.all[num].all_train_block { |arr| puts "Номер:#{arr.number}\nТип:#{arr.type}\nКол-во вагонов:#{arr.number_cars.size}\n" }
+    Station.all[num].all_train_block { |arr| puts "Номер:#{arr.number}\nТип:#{arr.class::TYPE}\nКол-во вагонов:#{arr.number_cars.size}\n" }
   end
 
   def station_all
@@ -164,14 +164,14 @@ module Interface
     train = trains[num]
     puts "Выберете вагон в котором хотите занять место." if ps_train?
     puts "Выберете вагон в котором хотите занять объем." if ca_train?
-    train.all_cars_block { |arr| puts "Свободных:#{arr.places - arr.busy}.Занятых:#{arr.busy}" }
+    train.all_cars_block { |arr| puts "Свободных:#{arr.places - arr.busy_places}.Занятых:#{arr.busy}" }
     num = gets.chomp.to_i
     car = train.number_cars[num]
     car.take_places if ps_train?
     if ca_train?
       puts "Введите занимаемый объем:"
       num = gets.chomp.to_i
-      car.busy = num
+      car.take_places num
     end
 
   end
