@@ -1,10 +1,10 @@
 require_relative './modules/instance_counter'
 
 class Route
-
   attr_reader :route
   attr_writer :train_position
   @@routes = []
+
   def initialize(station_start, station_end)
     @route = [station_start, station_end]
     @train_position = 0
@@ -19,13 +19,13 @@ class Route
   end
 
   def station_last
-     @route[@train_position - 1] if @train_position - 1 >= 0
-    "Вы на первой станции."
+    @route[@train_position - 1] if @train_position - 1 >= 0
+    'Вы на первой станции.'
   end
 
   def station_next
-     @route[@train_position + 1] if @train_position + 1 <= @route.size - 1
-    "Вы на последней станции."
+    @route[@train_position + 1] if @train_position + 1 <= @route.size - 1
+    'Вы на последней станции.'
   end
 
   def station_now
@@ -35,6 +35,7 @@ class Route
   def route_size
     @route.size
   end
+
   def self.all
     @@routes
   end

@@ -3,7 +3,6 @@ module InstanceCounter
 
   def self.included(base)
     base.send(:extend, InstanceCounter)
-
   end
 
   def instances
@@ -16,4 +15,3 @@ module InstanceCounter
     @@count += 1
   end
 end
-

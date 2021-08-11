@@ -4,25 +4,26 @@ require_relative '../modules/instance_counter'
 class Train
   extend Company
   include InstanceCounter
-  @@trains= []
   attr_accessor :speed
   attr_reader :number_cars, :number
 
-  NUMBER_FORMAT = /^(\w|[а-я]){2}(-?)(\w|[а-я]){3}$/i
+  NUMBER_FORMAT = /^(\w|[а-я]){2}(-?)(\w|[а-я]){3}$/i.freeze
+
+  @@trains = []
 
   def initialize(number)
     @number = number
     @number_cars = []
     @speed = 0
-    @route
+    @route = 0
     @current_station_index = 1
     validate!
-    @@trains << self
-    self.register_instance
+    self.class.trains << self
+    register_instance
   end
 
   def stop
-    self.speed(0)
+    speed(0)
   end
 
   def assign_route(route)
@@ -31,18 +32,17 @@ class Train
   end
 
   def go_next
-    raise "Вы на первой станции" if @current_station_index == 1
+    validate_last_state!
     @route.station_now.run_trains(@route.station_next, self)
     @current_station_index += 1
     current_station_index
   end
 
   def go_back
-    raise "Вы на первой станции" unless @current_station_index == @route.route_size
+    validate_first_state!
     @route.station_now.run_trains(@route.station_last, self)
     @current_station_index -= 1
     current_station_index
-
   end
 
   def station_last
@@ -58,7 +58,7 @@ class Train
   end
 
   def delete_car
-    raise "Поезд находиться в движении или остался всего 1" unless stop? && @number_cars.size > 1
+    validate_delete_car!
     @number_cars.last.delete
   end
 
@@ -69,38 +69,52 @@ class Train
     else
       f
     end
-
   end
 
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
+
   def self.all
     @@trains
   end
-  def all_cars_block (&block)
-    number_cars.each_with_index do |car,i| print "Номер вагона:#{i+1}:"
-    puts "#{block.call(car)}"
+
+  def all_cars_block(&block)
+    number_cars.each_with_index do |car, i|
+      print "Номер вагона:#{i + 1}:"
+      puts block.call(car).to_s
     end
   end
+
   protected
 
   def validate!
     errors = []
-    errors << "Неверный формат номера" unless number.to_s =~ NUMBER_FORMAT
-    errors << "Неправельный поезд находиться в двежении" unless stop?
-    raise errors.join(" ") unless errors.empty?
+    errors << 'Неверный формат номера' unless number.to_s =~ NUMBER_FORMAT
+    errors << 'Неправельный поезд находиться в двежении' unless stop?
+    raise errors.join(' ') unless errors.empty?
+  end
+
+  def validate_last_state!
+    raise 'Вы на последней станции' unless @current_station_index == @route.route_size
+  end
+
+  def validate_delete_car!
+    raise 'Поезд находиться в движении или остался всего 1' unless stop? && @number_cars.size > 1
+  end
+
+  def validate_first_state!
+    raise 'Вы на первой станции' if @current_station_index.zero?
   end
 
   def stop?
-    self.speed == 0
+    speed.zero?
   end
 
   def current_station_index
     @route.train_position = @current_station_index
-
   end
 end
