@@ -13,7 +13,7 @@ class Station
   end
 
   def add_trains(train)
-    @trains << train.number
+    @trains << train
   end
 
   def run_trains(station, train)
@@ -50,3 +50,7 @@ class Station
     raise errors.join(' ') unless errors.empty?
   end
 end
+Station.new("Первая")
+Station.new("Вторая")
+Station.new("Третья")
+Station.new("Четвертая")

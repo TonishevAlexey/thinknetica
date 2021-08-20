@@ -5,3 +5,4 @@ class PassengerCars < Car
     self.busy_places += 1
   end
 end
+PassengerCars.new(10)

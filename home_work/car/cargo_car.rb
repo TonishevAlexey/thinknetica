@@ -5,3 +5,5 @@ class CargoCars < Car
     self.busy_places = busy_places
   end
 end
+CargoCars.new(10)
+CargoCars.new(20)

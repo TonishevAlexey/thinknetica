@@ -5,3 +5,5 @@ class PassengerTrain < Train
     @number_cars << PassengerCars.new(places)
   end
 end
+PassengerTrain.new('11111')
+PassengerTrain.new('22222')

@@ -87,7 +87,7 @@ class Train
 
   def all_cars_block(&block)
     number_cars.each_with_index do |car, i|
-      print "Номер вагона:#{i + 1}:"
+      print "Номер вагона:#{i}:"
       puts block.call(car).to_s
     end
   end

@@ -4,12 +4,6 @@ class Main
   extend Interface
   puts 'w-буква или цифра,d-цифра.'
 
-  def initialize
-    @station = []
-    @trains = []
-    @route = 0
-  end
-
   loop do
     puts 'Введиет 1 для создания станции'
     puts 'Введиет 2 для создания поезда'
@@ -42,7 +36,7 @@ class Main
     when 8
       run_back
     when 9
-      puts station_all
+      puts station_all.map { |s| s.name }
     when 10
       station_trains
     when 11

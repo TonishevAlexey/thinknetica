@@ -7,6 +7,7 @@ class Route
 
   def initialize(station_start, station_end)
     @route = [station_start, station_end]
+    @@routes << self
     @train_position = 0
   end
 
