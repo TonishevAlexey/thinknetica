@@ -1,15 +1,18 @@
 require_relative '../modules/company'
 require_relative '../modules/instance_counter'
+require_relative '../modules/validation'
 
 class Train
   extend Company
   include InstanceCounter
+  include Validate
+
   attr_accessor :speed
   attr_reader :number_cars, :number
 
   NUMBER_FORMAT = /^(\w|[а-я]){2}(-?)(\w|[а-я]){3}$/i.freeze
-
   @@trains = []
+  validate :format, :number, NUMBER_FORMAT
 
   def initialize(number)
     @number = number
@@ -18,7 +21,7 @@ class Train
     @route = 0
     @current_station_index = 1
     validate!
-    self.class.trains << self
+    @@trains << self
     register_instance
   end
 
@@ -90,13 +93,6 @@ class Train
   end
 
   protected
-
-  def validate!
-    errors = []
-    errors << 'Неверный формат номера' unless number.to_s =~ NUMBER_FORMAT
-    errors << 'Неправельный поезд находиться в двежении' unless stop?
-    raise errors.join(' ') unless errors.empty?
-  end
 
   def validate_last_state!
     raise 'Вы на последней станции' unless @current_station_index == @route.route_size

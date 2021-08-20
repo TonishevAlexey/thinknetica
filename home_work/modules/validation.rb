@@ -34,7 +34,7 @@ module Validate
   end
 
   def format(attr_value, format)
-    format.match?(attr_value) ? true : raise('Значение не соответствует формату.')
+    attr_value =~ format ? true : raise('Значение не соответствует формату.')
   end
 
   def type(attr_value, type)
